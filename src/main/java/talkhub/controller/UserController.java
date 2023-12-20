@@ -19,6 +19,11 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @GetMapping("/exist")
+    public Boolean isUserExist(@RequestParam String login){
+        return userService.findByLogin(login) != null;
+    }
     @PostMapping("/register")
     public void register(@RequestBody UserCredentialsDto dto) {
         userService.register(dto);
@@ -32,7 +37,7 @@ public class UserController {
     @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/edit-photo", consumes =  {MULTIPART_FORM_DATA_VALUE})
-    public void editPhoto(@RequestParam MultipartFile file, @AuthenticationPrincipal User user){
+    public void editPhoto(@RequestPart MultipartFile file, @AuthenticationPrincipal User user){
         userService.editPhoto(file, user);
     }
 
@@ -43,7 +48,6 @@ public class UserController {
         userService.editCredentials(dto, user);
     }
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
     public UserDto me(@AuthenticationPrincipal User user) {
         return userService.me(user);

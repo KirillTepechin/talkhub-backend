@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import talkhub.model.User;
 import talkhub.model.enums.Role;
 import talkhub.repository.UserRepository;
+import talkhub.util.CategoryConverter;
 
 @SpringBootApplication
 public class TalkhubApplication implements CommandLineRunner {

@@ -13,23 +13,31 @@ import talkhub.service.CommentService;
 @RestController
 @RequestMapping("/comment")
 @CrossOrigin(origins = "*")
-@PreAuthorize("isAuthenticated()")
 public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @GetMapping("/{id}")
+    public CommentDto getComment(@PathVariable Long id){
+        return commentService.getComment(id);
+    }
     @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public CommentDto createComment(@RequestBody CommentDto dto, @AuthenticationPrincipal User user){
         return commentService.createComment(dto, user);
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public void deleteComment(@PathVariable Long id){
         commentService.deleteComment(id);
     }
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public CommentDto editComment(@PathVariable Long id, @RequestBody CommentDto dto){
         return commentService.editComment(id, dto);
     }

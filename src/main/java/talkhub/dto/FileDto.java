@@ -6,6 +6,4 @@ import lombok.Data;
 public class FileDto {
     private String base64;
     private String name;
-    private String type;
-    private String lastModified;
 }

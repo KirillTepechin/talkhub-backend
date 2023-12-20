@@ -41,4 +41,13 @@ public class Comment {
     )
     private Set<User> complaints;
 
+    public int getTotalCommentCount() {
+        int count = comments.size();
+
+        for (Comment comment : comments) {
+            count += comment.getTotalCommentCount();
+        }
+
+        return count;
+    }
 }

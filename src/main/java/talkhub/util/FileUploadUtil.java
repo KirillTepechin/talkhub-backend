@@ -1,8 +1,8 @@
 package talkhub.util;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 import talkhub.dto.FileDto;
 
@@ -38,12 +38,12 @@ public class FileUploadUtil {
         resultFilename = uuidFile + "." +file.getOriginalFilename();
 
         File newFile = new File(String.valueOf(destinationFile));
-        newFile.renameTo(new File(uploadPath + "/" + resultFilename));
+        newFile.renameTo(new File(uploadPath  + resultFilename));
 
-        return resultFilename;
+        return uploadPath + resultFilename;
     }
     public String uploadFiles(FileDto[] files, Long id){
-        String dirPrefix = uploadPath + "/" + UUID.randomUUID() + id;
+        String dirPrefix = uploadPath + UUID.randomUUID() + id;
         File directory = new File(dirPrefix);
         directory.mkdir();
         for (FileDto file:files) {
@@ -52,29 +52,33 @@ public class FileUploadUtil {
         return dirPrefix;
     }
 
-    private void uploadFile(FileDto fileDto, String dirPrefix){
+    private void uploadFile(FileDto dto, String dirPrefix){
+        String fileName = UUID.randomUUID() + "." + dto.getName();
         String partSeparator = ",";
-        if (fileDto.getBase64().contains(partSeparator)) {
-            String encoded = fileDto.getBase64().split(partSeparator)[1];
-            fileDto.setBase64(encoded);
+        if (dto.getBase64().contains(partSeparator)) {
+            String encoded = dto.getBase64().split(partSeparator)[1];
+            dto.setBase64(encoded);
         }
 
-        byte[] fileBytes = Base64.getDecoder().decode((fileDto.getBase64()));
+        byte[] bytes = Base64.getDecoder().decode(dto.getBase64().trim());
 
-        String uuidFile = UUID.randomUUID().toString();
-        String resultFilename;
-        resultFilename = uuidFile + "." +fileDto.getName();
-
-        try (FileOutputStream fos = new FileOutputStream(uploadPath + "/" + dirPrefix + "/" + resultFilename)) {
-            fos.write(fileBytes);
+        try (FileOutputStream fos = new FileOutputStream(dirPrefix + "/" + fileName)) {
+            fos.write(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void deleteDir(String dirPrefix){
-        File dir = new File(uploadPath+"/"+dirPrefix);
-        dir.delete();
+        try {
+            FileUtils.deleteDirectory(new File(dirPrefix));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    public void deleteFile(String path){
+        File file = new File(path);
+        file.delete();
+    }
 }

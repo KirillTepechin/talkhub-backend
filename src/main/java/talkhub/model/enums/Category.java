@@ -10,4 +10,5 @@ public enum Category {
     POLITICS,
     FOOD_DRINK,
     TRAVEL,
+    FINANCE
 }

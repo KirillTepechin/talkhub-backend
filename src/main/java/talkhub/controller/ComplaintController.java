@@ -20,6 +20,7 @@ public class ComplaintController {
     @Autowired
     private ComplaintService complaintService;
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @Secured("MODERATOR")
     @GetMapping
     public List<ComplaintResponseDto> findAllComplaints(){
@@ -32,11 +33,13 @@ public class ComplaintController {
     public void createComplaint(@RequestBody ComplaintRequestDto dto, @AuthenticationPrincipal User user){
         complaintService.createComplaint(dto, user);
     }
+    @SecurityRequirement(name = "Bearer Authentication")
     @Secured("MODERATOR")
     @DeleteMapping("/approve")
     public void approveComplaint(@RequestBody ComplaintRequestDto complaintDto){
         complaintService.approveComplaint(complaintDto);
     }
+    @SecurityRequirement(name = "Bearer Authentication")
     @Secured("MODERATOR")
     @DeleteMapping("/dismiss")
     public void dismissComplaint(@RequestBody ComplaintRequestDto complaintDto){

@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import talkhub.dto.TopicDto;
 import talkhub.model.User;
+import talkhub.model.enums.Category;
 import talkhub.service.TopicService;
 
 import java.util.List;
@@ -32,13 +33,13 @@ public class TopicController {
     }
 
     @GetMapping("/by/comments")
-    public List<TopicDto> findAllByCommentsCount(@RequestParam(required = false) List<String> categories){
-        return topicService.getTopicsByCommentsCount(categories);
+    public List<TopicDto> findAllByCommentsCount(@RequestParam(required = false) List<Category> categories,@RequestParam(required = false) boolean allCategoriesIn){
+        return topicService.getTopicsByCommentsCount(categories, allCategoriesIn);
     }
 
     @GetMapping("/by/date")
-    public List<TopicDto> findAllByDate(@RequestParam(required = false) List<String> categories){
-        return topicService.getTopicsByDate(categories);
+    public List<TopicDto> findAllByDate(@RequestParam(required = false) List<Category> categories, @RequestParam(required = false) boolean allCategoriesIn){
+        return topicService.getTopicsByDate(categories, allCategoriesIn);
     }
 
     @GetMapping("/search")
@@ -54,8 +55,8 @@ public class TopicController {
 
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}")
-    public TopicDto editTopic(@PathVariable Long id, @RequestBody TopicDto dto){
-        return topicService.editTopic(id, dto);
+    public TopicDto editTopic(@PathVariable Long id, @RequestBody TopicDto dto, @AuthenticationPrincipal User user){
+        return topicService.editTopic(id, dto, user);
     }
 
 }

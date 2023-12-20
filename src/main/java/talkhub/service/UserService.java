@@ -65,7 +65,11 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void editPhoto(MultipartFile file, User user){
+        var deletePath = user.getPhoto();
         user.setPhoto(fileUploadUtil.uploadFile(file));
+        if(deletePath!=null){
+            fileUploadUtil.deleteFile(deletePath);
+        }
         userRepository.save(user);
     }
 
