@@ -2,11 +2,14 @@ package talkhub.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 @Data
+@NoArgsConstructor
 public class CommentDto {
     private Long id;
     private String text;

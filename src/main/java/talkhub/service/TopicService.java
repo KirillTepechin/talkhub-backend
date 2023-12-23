@@ -12,11 +12,9 @@ import talkhub.model.User;
 import talkhub.model.enums.Category;
 import talkhub.repository.TopicRepository;
 import talkhub.util.CategoryConverter;
-import talkhub.util.ComplaintComparator;
 import talkhub.util.FileUploadUtil;
 import talkhub.util.TopicComparator;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;

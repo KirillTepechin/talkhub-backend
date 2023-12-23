@@ -26,7 +26,7 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public CommentDto getComment(Long id){
-        return  commentMapper.toCommentDto(commentRepository.findById(id).get());
+        return commentMapper.toCommentDto(commentRepository.findById(id).get());
     }
 
     @Transactional
